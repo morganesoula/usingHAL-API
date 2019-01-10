@@ -46,7 +46,13 @@
 
 foreach ($tabResults as $type => $items) :
 
-    echo "<span id='group'>" . $type . "</span>";
+    ?>
+    <div id="group">
+        <?php
+            echo $type;
+        ?>
+    </div>
+    <?php
 
     foreach ($items as $key => $element) :
         ?>

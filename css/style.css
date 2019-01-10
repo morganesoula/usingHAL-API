@@ -11,7 +11,11 @@
     font-weight: bold;
     font-size: 20px;
     text-transform: uppercase;
-    border: 2px solid red;
+    text-align: center;
+}
+
+.type {
+    text-align: center;
 }
 
 #publication {

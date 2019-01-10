@@ -1,6 +1,7 @@
 <?php
 
-include "Publication.php";
+require_once "Publication.php";
+require_once "../const.php";
 
 class Catalogue
 {
@@ -9,12 +10,9 @@ class Catalogue
     /* ************************************** TO DO ************************************** */
 
     /**
-     * Créer un fichier de constantes
      *
      * Essayer d'adapter la vue au besoin recherché (ViewBean)
      *
-     *
-     * Envoyer le code sur GitHub
      */
 
 
@@ -44,49 +42,10 @@ class Catalogue
 
     /* ************************************** VARIABLES POUR FUNCTION ************************************** */
 
-    const BASE_URL_ONE = "https://Api.archives-ouvertes.fr/search/?q=authFullName_t:(";
-    const BASE_URL_TWO = ")&rows=10000&fl=label_s,uri_s,authFullName_s,modifiedDate_s";
-    const GROUP = "&group=true&group.field=docType_s&group.limit=5000";
-    const TRI = "&sort=modifiedDate_s%20desc";
-    const MESSAGE_ADD_PUBLICATION_ERROR = "Problème lors de l'ajout d'une publication.";
-    const MESSAGE_NAME_PROFESSOR_ERROR = "Merci de renseigner un nom, un prénom ou les deux";
-    const MESSAGE_NO_RESULTS_AVAILABLE_ERROR = "Il n'y a pas de résultat de disponible.";
-    const MESSAGE_NO_DATA_AVAILABLE_ERROR = "Il n'y a pas de données.";
-    const MESSAGE_PROBLEM_WITH_URL_ERROR = "Il y a un problème avec l'URL";
+
     private $isSorted = false;
     private $isGrouped = false;
     public $tabModified = array();
-
-    /**
-     * Tableau de mapping de type de document (Acronyme -> libellé)
-     */
-    const DOCUMENT_TYPE_MAP = array(
-        'COMM' => 'Communication dans un congrès',
-        'ART' => 'Article dans une revue',
-        'POSTER' => 'Poster',
-        'UNDEFINED' => 'Documents non publiés',
-        'REPORT' => 'Rapport',
-        'COUV' => 'Chapitre d\'ouvrage',
-        'THESE' => 'Thèse',
-        'OUV' => 'Ouvrage (y compris édition critique et traduction)',
-        'DOUV' => 'Direction d\'ouvrage, Proceedings, Dossier',
-        'OTHER' => 'Autre publication',
-        'IMG' => 'Image',
-        'SYNTHESE' => 'Notes de synthèse',
-        'LECTURE' => 'Cours',
-        'PRESCONF' => 'Document associé à des manifestations scientifiques',
-        'SOFTWARE' => 'Logiciel',
-        'OTHERREPORT' => 'Rapport technique',
-        'PATENT' => 'Brevet',
-        'SON' => 'Son',
-        'MAP' => 'Carte',
-        'NOTE' => 'Notes de lecture',
-        'VIDEO' => 'Vidéo',
-        'MEM' => 'Mémoire / Rapport de stage'
-    );
-
-
-
 
 
     /* ************************************** FUNCTIONS ************************************** */
@@ -113,7 +72,7 @@ class Catalogue
                 $this->publications[] = $item;
             }
         } else {
-           die(static::MESSAGE_ADD_PUBLICATION_ERROR);
+           die(MESSAGE_ADD_PUBLICATION_ERROR);
         }
 
     }
@@ -126,7 +85,7 @@ class Catalogue
     public function getNameOfProfessor()
     {
         if ($_POST['nameProfessor'] == null) {
-            die(static::MESSAGE_NAME_PROFESSOR_ERROR);
+            die(MESSAGE_NAME_PROFESSOR_ERROR);
         } else {
             $name = $_POST['nameProfessor'];
             $name = rawurlencode($name);
@@ -142,16 +101,16 @@ class Catalogue
      */
     public function getBaseURL()
     {
-        $url = static::BASE_URL_ONE . $this->getNameOfProfessor() . static::BASE_URL_TWO;
+        $url = BASE_URL_ONE . $this->getNameOfProfessor() . BASE_URL_TWO;
 
         if ($this->isGrouped)
         {
-            $url = $url . static::GROUP;
+            $url = $url . GROUP;
         }
 
         if ($this->isSorted)
         {
-            $url = $url . static::TRI;
+            $url = $url . TRI;
         }
 
         return $url;
@@ -200,13 +159,13 @@ class Catalogue
                     }
 
                 } else {
-                    echo static::MESSAGE_NO_RESULTS_AVAILABLE_ERROR;
+                    echo MESSAGE_NO_RESULTS_AVAILABLE_ERROR;
                 }
             } else {
-                die(static::MESSAGE_NO_DATA_AVAILABLE_ERROR);
+                die(MESSAGE_NO_DATA_AVAILABLE_ERROR);
             }
         } else {
-            die(static::MESSAGE_PROBLEM_WITH_URL_ERROR);
+            die(MESSAGE_PROBLEM_WITH_URL_ERROR);
         }
 
         return $this->publications;
@@ -235,8 +194,8 @@ class Catalogue
 
                     foreach ($tabGroups as $key => $element) {
 
-                        if (key_exists($element['groupValue'], static::DOCUMENT_TYPE_MAP)) {
-                            $type = static::DOCUMENT_TYPE_MAP[$element['groupValue']];
+                        if (key_exists($element['groupValue'], DOCUMENT_TYPE_MAP)) {
+                            $type = DOCUMENT_TYPE_MAP[$element['groupValue']];
                         }
 
                         $tabDocs = $element['doclist']['docs'];
@@ -249,13 +208,13 @@ class Catalogue
                     }
 
                 } else {
-                    die(static::MESSAGE_NO_RESULTS_AVAILABLE_ERROR);
+                    die(MESSAGE_NO_RESULTS_AVAILABLE_ERROR);
                 }
             } else {
-                die(static::MESSAGE_NO_DATA_AVAILABLE_ERROR);
+                die(MESSAGE_NO_DATA_AVAILABLE_ERROR);
             }
         } else {
-            die(static::MESSAGE_PROBLEM_WITH_URL_ERROR);
+            die(MESSAGE_PROBLEM_WITH_URL_ERROR);
         }
 
         // Tableau d'objet(s)
