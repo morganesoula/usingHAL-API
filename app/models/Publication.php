@@ -63,7 +63,7 @@ class Publication
      */
     public function setLabel($label)
     {
-        $this->label = $label;
+        $this->label = (string) $label;
     }
 
     /**
@@ -79,7 +79,7 @@ class Publication
      */
     public function setAuthor(array $author)
     {
-        $this->author = $author;
+        $this->author = (array) $author;
     }
 
     /**
@@ -95,7 +95,7 @@ class Publication
      */
     public function setUri($uri)
     {
-        $this->uri = $uri;
+        $this->uri = (string) $uri;
     }
 
     /**
